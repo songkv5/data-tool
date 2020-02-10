@@ -130,9 +130,38 @@ public abstract class AbstractDrawerBaseOnTemplate implements TextDrawer, ImageD
     @Override
     public AbstractDrawerBaseOnTemplate drawCircleImage(Image image, int x, int y, int radius) {
         checkBeforeDraw();
-        /*
-         * 把模板图片的哪里剪掉
-         */
+        // 这个方法会有锯齿
+//        drawCircleImage_(image, x, y, radius);
+
+        int w = image.getWidth(null);
+        int h = image.getHeight(null);
+        // 制作要画图片的圆形图片对象
+        BufferedImage img =
+            graphics2D.getDeviceConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+        Graphics2D g2 = img.createGraphics();
+        img = g2.getDeviceConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+        g2.dispose();
+        g2 = img.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.fillRoundRect(0, 0, w, h, w, h);
+        g2.setComposite(AlphaComposite.SrcIn);
+        g2.drawImage(image, 0, 0, w, h, null);
+        g2.dispose();
+
+        graphics2D.drawImage(img, x, y, radius * 2, radius * 2, null);
+        return this;
+    }
+
+    /**
+     * 也可以，但是会有锯齿生成,建议使用
+     * {@link AbstractDrawerBaseOnTemplate#drawCircleImage(java.awt.Image, int, int, int)}
+     * @param image
+     * @param x
+     * @param y
+     * @param radius
+     */
+    private AbstractDrawerBaseOnTemplate simpleDrawCircleImage(Image image, int x, int y, int radius) {
+        //----------------------------有锯齿 begin------------------------
         Ellipse2D.Double shape = new Ellipse2D.Double(x, y, radius * 2, radius * 2);
         //要绘制的区域
         graphics2D.setClip(shape);
@@ -141,6 +170,8 @@ public abstract class AbstractDrawerBaseOnTemplate implements TextDrawer, ImageD
         graphics2D.drawImage(image, x, y, radius * 2, radius * 2, null);
         graphics2D.setClip(null);
         graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+
+        //----------------------------有锯齿 end------------------------
         return this;
     }
     private boolean isGraphics2DPrepared() {

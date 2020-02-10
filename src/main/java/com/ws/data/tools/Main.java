@@ -26,11 +26,13 @@ public class Main {
 //        testExport();
         try {
             File srcFile = new File("E:\\image2020-1-17_17-53-21.png");
-            BufferedImage portraitImage = ImageIO.read(new File("E:\\lADOBX_tbc0C7s0C7g_750_750.jpg"));
+            BufferedImage portraitImage = ImageIO.read(new File("E:\\DSC_0183.JPG"));
             BufferedImage srImg = ImageIO.read(new File("E:\\sr.jpg"));
+
             DefaultPosterDrawer drawer = new DefaultPosterDrawer(srcFile, "E:\\result.png");
             Color c = new Color(100, 100, 100);
             Font f = new Font("微软雅黑", Font.PLAIN, 25);
+
             int hSpace = 50;
             int x = 120;
             int y = 450;
@@ -40,54 +42,11 @@ public class Main {
                 .writeText("带看-15人", x, y += hSpace, c, f)
                 .writeText("成交-1人", x, y += hSpace, c, f)
                 // 头像
-                .drawCircleImage(portraitImage, 205, 120, 83)
+                .drawCircleImage(portraitImage, 205, 120, 86)
                 .dramImage(srImg, 79, 800, 131, 131)
                 .dramImage(srImg, 172, 268, 200, 40)
                 .writeText("武汉加油", 172, 323, Color.RED, f)
                 .make();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        cutCircle();
-
-//        testImgGenerate();
-    }
-
-    private static void testImgGenerate() {
-        try {
-            BufferedImage avatarImage = ImageIO.read(new File("E:\\test.png"));
-            int width = 570;
-            // 透明底的图片
-            BufferedImage formatAvatarImage = new BufferedImage(width, width, BufferedImage.TYPE_INT_BGR);
-            Graphics2D graphics = formatAvatarImage.createGraphics();
-//            graphics.getDeviceConfiguration().createCompatibleImage(width, width, Transparency.TRANSLUCENT);
-
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            //留一个像素的空白区域，这个很重要，画圆的时候把这个覆盖
-            //图片是一个圆型
-            /*
-             * 把模板图片的哪里剪掉
-             */
-            Ellipse2D.Double shape = new Ellipse2D.Double(0, 0, width, width);
-            //需要保留的区域
-            graphics.setClip(shape);
-            // 画图片，把avatarImage画到formatAvatarImage
-            /*
-             * x,y 都是模板图片上的坐标。
-             * with,height 是avatarImage的宽和高
-             */
-            graphics.drawImage(avatarImage, 0, 0, width, width, null);
-            ImageIO.write(formatAvatarImage, "JPG", new FileOutputStream("E:\\8.png"));
-            graphics.dispose();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private static void cutCircle() {
-        try {
-            CircleCutter circleCutter = new CircleCutter(750);
-            BufferedImage result = circleCutter.cut(ImageIO.read(new File("E:\\lADOBX_tbc0C7s0C7g_750_750.jpg")));
-            ImageIO.write(result, "JPG", new FileOutputStream("E:\\3.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
