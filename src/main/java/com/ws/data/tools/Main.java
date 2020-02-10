@@ -40,7 +40,7 @@ public class Main {
                 .writeText("带看-15人", x, y += hSpace, c, f)
                 .writeText("成交-1人", x, y += hSpace, c, f)
                 // 头像
-                .dramCircleImage(portraitImage, 205, 120, 83)
+                .drawCircleImage(portraitImage, 205, 120, 83)
                 .dramImage(srImg, 79, 800, 131, 131)
                 .dramImage(srImg, 172, 268, 200, 40)
                 .writeText("武汉加油", 172, 323, Color.RED, f)

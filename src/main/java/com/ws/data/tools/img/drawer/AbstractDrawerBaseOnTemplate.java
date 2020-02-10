@@ -114,9 +114,6 @@ public abstract class AbstractDrawerBaseOnTemplate implements TextDrawer, ImageD
     @Override
     public AbstractDrawerBaseOnTemplate writeText(String text, int x, int y, Color color, Font font) {
         checkBeforeDraw();
-        this.graphics2D.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
-        // 消除文本锯齿
-        this.graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         this.graphics2D.setColor(color);
         this.graphics2D.setFont(font);
         this.graphics2D.drawString(text, x, y);
@@ -126,16 +123,13 @@ public abstract class AbstractDrawerBaseOnTemplate implements TextDrawer, ImageD
     @Override
     public AbstractDrawerBaseOnTemplate dramImage(Image image, int x, int y, int width, int height) {
         checkBeforeDraw();
-        this.graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         this.graphics2D.drawImage(image, x, y, width, height, null);
         return this;
     }
 
     @Override
-    public AbstractDrawerBaseOnTemplate dramCircleImage(Image image, int x, int y, int radius) {
+    public AbstractDrawerBaseOnTemplate drawCircleImage(Image image, int x, int y, int radius) {
         checkBeforeDraw();
-        // 图片抗锯齿
-        this.graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         /*
          * 把模板图片的哪里剪掉
          */
@@ -155,6 +149,11 @@ public abstract class AbstractDrawerBaseOnTemplate implements TextDrawer, ImageD
     private void checkBeforeDraw() {
         if (!isGraphics2DPrepared()) {
             this.graphics2D = this.tgtImg.createGraphics();
+            // 图片抗锯齿
+            this.graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            this.graphics2D.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
+            // 消除文本锯齿
+            this.graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             // 结果图片准备
             this.graphics2D.drawImage(srcImg.getScaledInstance(srcImg.getWidth(null), srcImg.getHeight(null), Image.SCALE_SMOOTH), 0, 0, null);
             this.graphics2DPrepared = true;

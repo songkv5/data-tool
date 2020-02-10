@@ -17,5 +17,5 @@ public interface CircleImageDrawer extends Drawer{
      * @param radius
      * @return
      */
-    ImageDrawer dramCircleImage(Image image, int x, int y, int radius);
+    ImageDrawer drawCircleImage(Image image, int x, int y, int radius);
 }
