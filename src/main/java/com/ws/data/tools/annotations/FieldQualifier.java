@@ -24,4 +24,15 @@ public @interface FieldQualifier {
     boolean exclude() default false;
     /** 排序，字段展示顺序*/
     int sequence() default 0;
+    /**
+     * 是否自适应大小
+     * @return
+     */
+    boolean autoSize() default false;
+
+    /**
+     * 列宽，会影响autoSize属性
+     * @return
+     */
+    int width() default 0;
 }
